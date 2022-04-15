@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateSurveyDto as CreateVersionDto } from './dto/create-version.dto';
 import { UpdateSurveyDto } from './dto/update-version.dto';
 import { VersionEntity } from './entities/version.entity';
@@ -15,7 +15,7 @@ export class VersionService {
   @InjectRepository(VersionEntity)
   private readonly versionRepository: Repository<VersionEntity>;
 
-  // 创建一个用户
+  // 创建一个版本
   async create(createVersionDto: CreateVersionDto) {
     const newVersion = await this.versionRepository.create(createVersionDto);
     const res = await this.versionRepository.save(newVersion);
@@ -28,9 +28,10 @@ export class VersionService {
 
   async findAllBySurveyId(survey_id: string) {
     return await this.versionRepository.find({
-      where: { survey_id }
+      where: { survey_id },
     });
   }
+
   /**
    * 根据id查询用户
    * @param id
@@ -61,14 +62,16 @@ export class VersionService {
 
   /**
    * 批量删除
-   * @param ids 
-   * @returns 
+   * @param ids
+   * @returns
    */
   async batchRemove(ids: number[]) {
-    const entities = await this.versionRepository.findByIds(ids)
-    console.log(entities)
+    const entities = await this.versionRepository.findByIds(ids);
+    console.log(entities);
     if (!entities) {
-      throw new NotFoundException(`Some Entities not found, no changes applied!`);
+      throw new NotFoundException(
+        'Some Entities not found, no changes applied!',
+      );
     }
     return this.versionRepository.softRemove(entities);
   }

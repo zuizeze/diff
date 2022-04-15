@@ -14,11 +14,9 @@ export class VersionEntity {
   @CreateDateColumn()
   create_at?: Date;
 
-
   @DeleteDateColumn()
   delete_at?: Date;
 
-  
   @Column()
   url: string;
 

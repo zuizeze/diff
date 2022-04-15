@@ -6,12 +6,11 @@ export class CreateSurveyDto {
 
   survey_id: string;
 
+  create_at: Date;
 
-  create_at : Date;
+  expired: boolean;
 
-  expired : boolean;
+  url: string;
 
-  url:  string
-
-  save_name : string;
+  save_name: string;
 }

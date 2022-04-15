@@ -6,27 +6,39 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { VersionService } from './version.service';
 import { CreateSurveyDto } from './dto/create-version.dto';
 import { UpdateSurveyDto } from './dto/update-version.dto';
 
+import { create_file } from '../../file';
 @Controller('version')
 export class VersionController {
   constructor(private readonly surveyService: VersionService) {}
 
   @Post()
-  create(@Body() createSurveyDto: CreateSurveyDto) {
+  async create(
+    @Body('diff') createSurveyDto: CreateSurveyDto,
+    @Body('file_info') fileInfo: string,
+  ) {
     const newData = new Date();
-    return this.surveyService.create({
-      ...createSurveyDto,
-      create_at: newData,
-    });
+    const file_info = await create_file(fileInfo);
+    if (file_info) {
+      return this.surveyService.create({
+        ...createSurveyDto,
+        create_at: newData,
+        url: file_info.file_path,
+      });
+    } else {
+      throw new NotFoundException(
+        'Some Entities not found, no changes applied!',
+      );
+    }
   }
 
   @Get(':survey_id')
   findOne(@Param('survey_id') survey_id: string) {
-    console.log('id', survey_id);
     return this.surveyService.findAllBySurveyId(survey_id);
   }
 

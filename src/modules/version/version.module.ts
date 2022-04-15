@@ -9,5 +9,4 @@ import { VersionEntity } from './entities/version.entity';
   controllers: [VersionController],
   providers: [VersionService],
 })
-
-export class VersionModule { }
+export class VersionModule {}
