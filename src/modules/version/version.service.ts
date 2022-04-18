@@ -39,7 +39,6 @@ export class VersionService {
    */
   async findOne(id: number) {
     const version = await this.versionRepository.findOne(id, {
-      // select: ['user_name', 'user_email'],
       withDeleted: false,
     });
     if (!version) {

@@ -5,7 +5,7 @@ const chars =
 
 export const create_file = async (json: any) => {
   const uuid = generate();
-  const fileExtension = 'txt';
+  const fileExtension = 'json';
   const data = JSON.stringify(json);
   const file_path = `${uuid}.${fileExtension}`;
   const uploadfile = createWriteStream(
@@ -13,9 +13,7 @@ export const create_file = async (json: any) => {
   );
   const result = await uploadfile.write(data);
   if (result) {
-    return {
-      file_path,
-    };
+    return file_path;
   }
   return;
 };

@@ -19,16 +19,16 @@ export class VersionController {
 
   @Post()
   async create(
-    @Body('diff') createSurveyDto: CreateSurveyDto,
-    @Body('file_info') fileInfo: string,
+    @Body('info') info: CreateSurveyDto,
+    @Body('diff') diff: string,
   ) {
     const newData = new Date();
-    const file_info = await create_file(fileInfo);
-    if (file_info) {
+    const file_path = await create_file(diff);
+    if (file_path) {
       return this.surveyService.create({
-        ...createSurveyDto,
+        ...info,
         create_at: newData,
-        url: file_info.file_path,
+        url: file_path,
       });
     } else {
       throw new NotFoundException(
